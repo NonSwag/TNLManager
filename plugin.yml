@@ -1,0 +1,11 @@
+name: TNLManager
+main: net.nonswag.tnl.manager.PluginManager
+version: "1.2"
+api-version: "1.13"
+author: NonSwag
+prefix: "Manager"
+website: http://www.thenextlvl.net
+softdepend:
+  - TNLListener
+commands:
+  plugin:
