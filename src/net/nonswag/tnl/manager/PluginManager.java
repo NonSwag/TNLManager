@@ -2,7 +2,7 @@ package net.nonswag.tnl.manager;
 
 import net.nonswag.tnl.manager.commands.PluginCommand;
 import net.nonswag.tnl.manager.listener.CommandListener;
-import net.nonswag.tnl.manager.tabCompletions.PluginCommandTabComplete;
+import net.nonswag.tnl.manager.tabcompleter.PluginCommandTabComplete;
 import net.nonswag.tnl.manager.utils.PluginUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;

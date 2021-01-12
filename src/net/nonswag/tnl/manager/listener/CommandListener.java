@@ -2,14 +2,10 @@ package net.nonswag.tnl.manager.listener;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.server.ServerCommandEvent;
-
-import java.util.Arrays;
-import java.util.List;
 
 public class CommandListener implements Listener {
 

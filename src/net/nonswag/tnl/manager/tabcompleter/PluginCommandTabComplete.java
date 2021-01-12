@@ -1,4 +1,4 @@
-package net.nonswag.tnl.manager.tabCompletions;
+package net.nonswag.tnl.manager.tabcompleter;
 
 import net.nonswag.tnl.manager.utils.PluginUtil;
 import org.bukkit.command.Command;
