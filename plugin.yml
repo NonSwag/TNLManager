@@ -1,6 +1,6 @@
 name: TNLManager
 main: net.nonswag.tnl.manager.PluginManager
-version: "1.2"
+version: "2.0"
 api-version: "1.13"
 author: NonSwag
 prefix: "Manager"

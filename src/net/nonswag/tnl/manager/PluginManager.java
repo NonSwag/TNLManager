@@ -1,5 +1,6 @@
 package net.nonswag.tnl.manager;
 
+import net.nonswag.tnl.listener.utils.PluginUpdate;
 import net.nonswag.tnl.manager.commands.PluginCommand;
 import net.nonswag.tnl.manager.listener.CommandListener;
 import net.nonswag.tnl.manager.tabcompleter.PluginCommandTabComplete;
@@ -22,6 +23,7 @@ public class PluginManager extends JavaPlugin {
             setPlugin(this);
             if (PluginUtil.getPlugin("TNLListener") != null) {
                 try {
+                    new PluginUpdate(getPlugin()).downloadUpdate();
                     setPrefix(net.nonswag.tnl.listener.NMSMain.getPrefix());
                 } catch (Throwable ignored) {
                     setPrefix("§8[§f§lTNL§8]");
