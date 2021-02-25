@@ -84,12 +84,11 @@ public class PluginManager implements Manager {
     @Nonnull
     @Override
     public String getName(@Nonnull Plugin plugin, boolean includeVersion) {
-        StringBuilder name = new StringBuilder(plugin.isEnabled() ? "§a" : "§c");
-        name.append(plugin.getName());
         if (includeVersion) {
-            name.append(" §8(§7").append(getVersion(plugin)).append(plugin.getDescription().getAPIVersion() == null ? "*" : "").append("§8)");
+            return (plugin.isEnabled() ? "§a" : "§c") + plugin.getName() + " §8(§7" + getVersion(plugin) + (plugin.getDescription().getAPIVersion() == null ? "*" : "") + "§8)";
+        } else {
+            return plugin.getName();
         }
-        return name.toString();
     }
 
     @Nullable
