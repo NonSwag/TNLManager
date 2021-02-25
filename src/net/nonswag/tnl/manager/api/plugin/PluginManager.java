@@ -85,7 +85,7 @@ public class PluginManager implements Manager {
     @Override
     public String getName(@Nonnull Plugin plugin, boolean includeVersion) {
         if (includeVersion) {
-            return (plugin.isEnabled() ? "§a" : "§c") + plugin.getName() + " §8(§7" + getVersion(plugin) + (plugin.getDescription().getAPIVersion() == null ? "*" : "") + "§8)";
+            return (plugin.isEnabled() ? "§a" : "§c") + plugin.getName() + " §8(§7" + getVersion(plugin) + (plugin.getDescription().getAPIVersion() == null || plugin.getDescription().getAPIVersion().isEmpty() ? "*" : "") + "§8)";
         } else {
             return plugin.getName();
         }

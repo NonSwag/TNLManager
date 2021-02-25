@@ -27,7 +27,7 @@ public class PluginCommand implements CommandExecutor {
             if (args[0].equalsIgnoreCase("list")) {
                 List<String> pluginList = new ArrayList<>();
                 for (Plugin all : Bukkit.getPluginManager().getPlugins()) {
-                    pluginList.add(PluginManager.getInstance().getName(all, true));
+                    pluginList.add(PluginManager.getInstance().getName(all, false));
                 }
                 sender.sendMessage(getPrefix() + " §7Plugins §8(§6" + pluginList.size() + "§8)§8: " + String.join("§8, §r", pluginList));
             } else if (args[0].equalsIgnoreCase("info")) {
