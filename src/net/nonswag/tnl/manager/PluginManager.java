@@ -12,7 +12,6 @@ import javax.annotation.Nullable;
 
 public class PluginManager extends JavaPlugin {
 
-    @Nullable private static final PluginManager instance = new PluginManager();
     @Nullable private static String prefix;
 
     @Override
