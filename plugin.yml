@@ -1,10 +1,9 @@
-name: TNLManager
+name: "TNLManager"
 main: net.nonswag.tnl.manager.PluginManager
-version: "2.0"
+version: "2.1"
 api-version: "1.13"
-author: NonSwag
-prefix: "Manager"
-website: http://www.thenextlvl.net
+author: "NonSwag"
+website: https://www.thenextlvl.net/
 softdepend:
   - TNLListener
 commands:

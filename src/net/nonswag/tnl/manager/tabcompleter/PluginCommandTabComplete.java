@@ -1,6 +1,6 @@
 package net.nonswag.tnl.manager.tabcompleter;
 
-import net.nonswag.tnl.manager.utils.PluginUtil;
+import net.nonswag.tnl.manager.api.plugin.PluginManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
@@ -29,11 +29,11 @@ public class PluginCommandTabComplete implements TabCompleter {
                         || args[0].equalsIgnoreCase("disable")
                         || args[0].equalsIgnoreCase("reload")
                         || args[0].equalsIgnoreCase("unload")) {
-                    suggestions.addAll(PluginUtil.getPluginNames(false));
+                    suggestions.addAll(PluginManager.getInstance().getPlugins(false));
                 } else if (args[0].equalsIgnoreCase("load")) {
-                    for (File file : PluginUtil.Folder.BUKKIT.getFile().listFiles()) {
+                    for (File file : new File("plugins").listFiles()) {
                         if (file.getName().toLowerCase().endsWith(".jar")) {
-                            if (PluginUtil.getPluginByName(file.getName(), false) == null) {
+                            if (PluginManager.getInstance().getPlugin(file.getName().replace(".jar", "")) == null) {
                                 suggestions.add(file.getName());
                             }
                         }
