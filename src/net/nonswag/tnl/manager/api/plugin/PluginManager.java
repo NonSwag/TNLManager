@@ -87,7 +87,7 @@ public class PluginManager implements Manager {
         if (includeVersion) {
             return (plugin.isEnabled() ? "§a" : "§c") + plugin.getName() + " §8(§7" + getVersion(plugin) + (plugin.getDescription().getAPIVersion() == null || plugin.getDescription().getAPIVersion().isEmpty() ? "*" : "") + "§8)";
         } else {
-            return plugin.getName();
+            return (plugin.isEnabled() ? "§a" : "§c") + plugin.getName();
         }
     }
 
@@ -102,7 +102,7 @@ public class PluginManager implements Manager {
     public List<String> getPlugins(boolean includeVersion) {
         List<String> plugins = new ArrayList<>();
         for (Plugin plugin : getPlugins()) {
-            plugins.add(getName(plugin, false));
+            plugins.add(getName(plugin, includeVersion));
         }
         return plugins;
     }
@@ -126,13 +126,13 @@ public class PluginManager implements Manager {
         if (plugin.isEnabled()) {
             unload(plugin);
             disable(plugin);
-            load("plugins/" + getName(plugin, false));
+            load("plugins/" + plugin.getName());
             for (Plugin all : getPlugins()) {
                 if (!all.equals(plugin)) {
                     if (all.getDescription().getDepend().contains(plugin.getName()) || all.getDescription().getSoftDepend().contains(plugin.getName())) {
                         unload(all);
                         disable(all);
-                        load("plugins/" + getName(all, false));
+                        load("plugins/" + all.getName());
                     }
                 }
             }
@@ -148,7 +148,7 @@ public class PluginManager implements Manager {
 
     @Override
     public void unload(@Nonnull Plugin plugin) {
-        String name = getName(plugin, false);
+        String name = plugin.getName();
         org.bukkit.plugin.PluginManager pluginManager = Bukkit.getPluginManager();
         SimpleCommandMap commandMap = null;
         Plugin[] plugins = getPlugins();
@@ -221,6 +221,5 @@ public class PluginManager implements Manager {
             } catch (Exception ignored) {
             }
         }
-        plugin.getName();
     }
 }
