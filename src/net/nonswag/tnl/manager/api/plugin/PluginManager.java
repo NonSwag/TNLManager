@@ -102,7 +102,11 @@ public class PluginManager implements Manager {
     public List<String> getPlugins(boolean includeVersion) {
         List<String> plugins = new ArrayList<>();
         for (Plugin plugin : getPlugins()) {
-            plugins.add(getName(plugin, includeVersion));
+            if (includeVersion) {
+                plugins.add(getName(plugin, true));
+            } else {
+                plugins.add(plugin.getName());
+            }
         }
         return plugins;
     }
@@ -151,7 +155,7 @@ public class PluginManager implements Manager {
         String name = plugin.getName();
         org.bukkit.plugin.PluginManager pluginManager = Bukkit.getPluginManager();
         SimpleCommandMap commandMap = null;
-        Plugin[] plugins = getPlugins();
+        List<Plugin> plugins = null;
         Map<String, Plugin> names = null;
         Map<String, Command> commands = null;
         Map<Event, SortedSet<RegisteredListener>> listeners = null;
@@ -169,6 +173,12 @@ public class PluginManager implements Manager {
         } catch (Exception ignored) {
         }
         try {
+            Field pluginsField = Bukkit.getPluginManager().getClass().getDeclaredField("plugins");
+            pluginsField.setAccessible(true);
+            plugins = (List<Plugin>) pluginsField.get(pluginManager);
+        } catch (Exception ignored) {
+        }
+        try {
             Field commandMapField = Bukkit.getPluginManager().getClass().getDeclaredField("commandMap");
             commandMapField.setAccessible(true);
             commandMap = (SimpleCommandMap) commandMapField.get(pluginManager);
@@ -181,6 +191,9 @@ public class PluginManager implements Manager {
         } catch (Exception ignored) {
         }
         disable(plugin);
+        if (plugins != null) {
+            plugins.remove(plugin);
+        }
         if (names != null) {
             names.remove(name);
         }
