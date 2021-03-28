@@ -1,11 +1,13 @@
 package net.nonswag.tnl.manager.listener;
 
-import org.bukkit.Bukkit;
+import net.nonswag.tnl.manager.commands.PluginCommand;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.server.ServerCommandEvent;
+
+import javax.annotation.Nonnull;
 
 public class CommandListener implements Listener {
 
@@ -23,9 +25,9 @@ public class CommandListener implements Listener {
         }
     }
 
-    private boolean onCommand(CommandSender sender, String command) {
+    private boolean onCommand(@Nonnull CommandSender sender, @Nonnull String command) {
         if (command.equalsIgnoreCase("pl") || command.equalsIgnoreCase("plugins")) {
-            Bukkit.dispatchCommand(sender, "plugin list");
+            PluginCommand.sendPlugins(sender);
             return true;
         }
         return false;
