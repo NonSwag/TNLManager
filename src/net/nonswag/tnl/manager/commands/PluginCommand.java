@@ -1,9 +1,9 @@
 package net.nonswag.tnl.manager.commands;
 
+import net.nonswag.tnl.listener.api.item.v1_15.R1.NMSItem;
 import net.nonswag.tnl.listener.api.message.ChatComponent;
 import net.nonswag.tnl.listener.api.message.Message;
 import net.nonswag.tnl.listener.api.message.Placeholder;
-import net.nonswag.tnl.listener.utils.ItemBuilder;
 import net.nonswag.tnl.manager.Manager;
 import net.nonswag.tnl.manager.api.plugin.PluginManager;
 import org.bukkit.Bukkit;
@@ -25,8 +25,8 @@ import java.util.List;
 
 public class PluginCommand implements CommandExecutor {
 
-    private static final ItemStack placeholder1 = new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).setName("§7-§8/§7-").build();
-    private static final ItemStack placeholder2 = new ItemBuilder(Material.WHITE_STAINED_GLASS_PANE).setName("§7-§8/§7-").build();
+    private static final ItemStack placeholder1 = new NMSItem(Material.GRAY_STAINED_GLASS_PANE).setName("§7-§8/§7-").build();
+    private static final ItemStack placeholder2 = new NMSItem(Material.WHITE_STAINED_GLASS_PANE).setName("§7-§8/§7-").build();
 
     public static void sendPlugins(@Nonnull CommandSender viewer) {
         if (Manager.getInstance().isEveryoneCanSeePlugins() || viewer.hasPermission("tnl.manage")) {
@@ -60,14 +60,14 @@ public class PluginCommand implements CommandExecutor {
                 for (Plugin plugin : Bukkit.getPluginManager().getPlugins()) {
                     List<String> authors = plugin.getDescription().getAuthors();
                     if (authors.size() == 1) {
-                        inventory.addItem(new ItemBuilder(Material.BOOK).setName("§8* §r" + PluginManager.getInstance().getName(plugin, true)).setLore("§8* §7Author§8: §6" + authors.get(0)).build());
+                        inventory.addItem(new NMSItem(Material.BOOK).setName("§8* §r" + PluginManager.getInstance().getName(plugin, true)).setLore("§8* §7Author§8: §6" + authors.get(0)).build());
                     } else {
                         List<String> lore = new ArrayList<>();
                         lore.add("§8* §7Authors§8: §6" + authors.size());
                         for (String s : authors) {
                             lore.add("§6" + s);
                         }
-                        inventory.addItem(new ItemBuilder(Material.BOOK).setName("§8* §r" + PluginManager.getInstance().getName(plugin, true)).setLore(lore).build());
+                        inventory.addItem(new NMSItem(Material.BOOK).setName("§8* §r" + PluginManager.getInstance().getName(plugin, true)).setLore(lore).build());
                     }
                 }
                 player.openInventory(inventory);
