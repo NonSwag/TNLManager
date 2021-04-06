@@ -5,7 +5,6 @@ import net.nonswag.tnl.listener.api.event.EventManager;
 import net.nonswag.tnl.listener.api.file.JsonConfig;
 import net.nonswag.tnl.listener.api.plugin.PluginUpdate;
 import net.nonswag.tnl.listener.api.settings.Settings;
-import net.nonswag.tnl.manager.api.plugin.PluginManager;
 import net.nonswag.tnl.manager.commands.PluginCommand;
 import net.nonswag.tnl.manager.listener.CommandListener;
 import net.nonswag.tnl.manager.completer.PluginCommandTabComplete;
@@ -18,7 +17,7 @@ public class Manager extends JavaPlugin {
     protected static Manager instance = null;
 
     @Nonnull
-    private final JsonConfig configuration = new JsonConfig("plugins/TNLManager/", "config.json");
+    private final JsonConfig configuration = new JsonConfig("plugins/Manager/", "config.json");
 
     private boolean pluginsGUI = true;
     private boolean everyoneCanSeePlugins = true;
@@ -26,11 +25,6 @@ public class Manager extends JavaPlugin {
     @Override
     public void onEnable() {
         setInstance(this);
-        if (PluginManager.getInstance().getPlugin("TNLListener") != null) {
-            if (Settings.AUTO_UPDATER.getValue()) {
-                new PluginUpdate(this).downloadUpdate();
-            }
-        }
         CommandManager commandManager = new CommandManager(this);
         EventManager eventManager = new EventManager(this);
         commandManager.registerCommand("plugin", "tnl.manage", new PluginCommand(), new PluginCommandTabComplete());
@@ -44,6 +38,9 @@ public class Manager extends JavaPlugin {
         setPluginsGUI(getConfiguration().getJsonElement().getAsJsonObject().get("plugins-gui").getAsBoolean());
         setEveryoneCanSeePlugins(getConfiguration().getJsonElement().getAsJsonObject().get("everyone-can-see-plugins").getAsBoolean());
         getConfiguration().save();
+        if (Settings.AUTO_UPDATER.getValue()) {
+            new PluginUpdate(this).downloadUpdate();
+        }
     }
 
     private static void setInstance(@Nonnull Manager instance) {

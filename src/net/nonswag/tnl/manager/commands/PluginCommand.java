@@ -1,19 +1,16 @@
 package net.nonswag.tnl.manager.commands;
 
-import net.nonswag.tnl.listener.api.item.v1_15.R1.NMSItem;
 import net.nonswag.tnl.listener.api.message.ChatComponent;
 import net.nonswag.tnl.listener.api.message.Message;
 import net.nonswag.tnl.listener.api.message.Placeholder;
 import net.nonswag.tnl.manager.Manager;
+import net.nonswag.tnl.manager.api.gui.PluginsGUI;
 import net.nonswag.tnl.manager.api.plugin.PluginManager;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.InvalidDescriptionException;
 import org.bukkit.plugin.InvalidPluginException;
 import org.bukkit.plugin.Plugin;
@@ -25,9 +22,6 @@ import java.util.List;
 
 public class PluginCommand implements CommandExecutor {
 
-    private static final ItemStack placeholder1 = new NMSItem(Material.GRAY_STAINED_GLASS_PANE).setName("§7-§8/§7-").build();
-    private static final ItemStack placeholder2 = new NMSItem(Material.WHITE_STAINED_GLASS_PANE).setName("§7-§8/§7-").build();
-
     public static void sendPlugins(@Nonnull CommandSender viewer) {
         if (Manager.getInstance().isEveryoneCanSeePlugins() || viewer.hasPermission("tnl.manage")) {
             if (!Manager.getInstance().isPluginsGUI() || !(viewer instanceof Player)) {
@@ -37,40 +31,7 @@ public class PluginCommand implements CommandExecutor {
                 }
                 viewer.sendMessage(ChatComponent.getText("%prefix% §7Plugins §8(§6" + pluginList.size() + "§8)§8: " + String.join("§8, §r", pluginList)));
             } else {
-                Player player = (Player) viewer;
-                Inventory inventory = Bukkit.createInventory(null, 54, "§8» §6§lPlugin§e§lList");
-                inventory.setItem(0, placeholder2);
-                inventory.setItem(8, placeholder2);
-                inventory.setItem(9, placeholder1);
-                inventory.setItem(17, placeholder1);
-                inventory.setItem(18, placeholder1);
-                inventory.setItem(26, placeholder1);
-                inventory.setItem(27, placeholder1);
-                inventory.setItem(35, placeholder1);
-                inventory.setItem(36, placeholder1);
-                inventory.setItem(44, placeholder1);
-                inventory.setItem(inventory.getSize() - 9, placeholder2);
-                inventory.setItem(inventory.getSize() - 1, placeholder2);
-                for (int i = 1; i <= 7; i++) {
-                    inventory.setItem(i, placeholder1);
-                }
-                for (int i = inventory.getSize() - 8; i <= inventory.getSize() - 2; i++) {
-                    inventory.setItem(i, placeholder1);
-                }
-                for (Plugin plugin : Bukkit.getPluginManager().getPlugins()) {
-                    List<String> authors = plugin.getDescription().getAuthors();
-                    if (authors.size() == 1) {
-                        inventory.addItem(new NMSItem(Material.BOOK).setName("§8* §r" + PluginManager.getInstance().getName(plugin, true)).setLore("§8* §7Author§8: §6" + authors.get(0)).build());
-                    } else {
-                        List<String> lore = new ArrayList<>();
-                        lore.add("§8* §7Authors§8: §6" + authors.size());
-                        for (String s : authors) {
-                            lore.add("§6" + s);
-                        }
-                        inventory.addItem(new NMSItem(Material.BOOK).setName("§8* §r" + PluginManager.getInstance().getName(plugin, true)).setLore(lore).build());
-                    }
-                }
-                player.openInventory(inventory);
+                ((Player) viewer).openInventory(PluginsGUI.getInstance().getInventory());
             }
         } else {
             viewer.sendMessage(Message.NO_PERMISSION_EN.getText(new Placeholder("permission", "tnl.manage")));
