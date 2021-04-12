@@ -2,12 +2,13 @@ package net.nonswag.tnl.manager;
 
 import net.nonswag.tnl.listener.api.command.CommandManager;
 import net.nonswag.tnl.listener.api.event.EventManager;
-import net.nonswag.tnl.listener.api.file.JsonConfig;
+import net.nonswag.tnl.listener.api.config.PropertyConfig;
 import net.nonswag.tnl.listener.api.plugin.PluginUpdate;
 import net.nonswag.tnl.listener.api.settings.Settings;
 import net.nonswag.tnl.manager.commands.PluginCommand;
 import net.nonswag.tnl.manager.listener.CommandListener;
 import net.nonswag.tnl.manager.completer.PluginCommandTabComplete;
+import net.nonswag.tnl.manager.listener.InventoryListener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.annotation.Nonnull;
@@ -17,7 +18,7 @@ public class Manager extends JavaPlugin {
     protected static Manager instance = null;
 
     @Nonnull
-    private final JsonConfig configuration = new JsonConfig("plugins/Manager/", "config.json");
+    private final PropertyConfig configuration = new PropertyConfig("plugins/Manager/", "config.properties");
 
     private boolean pluginsGUI = true;
     private boolean everyoneCanSeePlugins = true;
@@ -29,14 +30,15 @@ public class Manager extends JavaPlugin {
         EventManager eventManager = new EventManager(this);
         commandManager.registerCommand("plugin", "tnl.manage", new PluginCommand(), new PluginCommandTabComplete());
         eventManager.registerListener(new CommandListener());
-        if (!getConfiguration().getJsonElement().getAsJsonObject().has("plugins-gui")) {
-            getConfiguration().getJsonElement().getAsJsonObject().addProperty("plugins-gui", isPluginsGUI());
+        eventManager.registerListener(new InventoryListener());
+        if (!getConfiguration().has("plugins-gui")) {
+            getConfiguration().setValue("plugins-gui", isPluginsGUI());
         }
-        if (!getConfiguration().getJsonElement().getAsJsonObject().has("everyone-can-see-plugins")) {
-            getConfiguration().getJsonElement().getAsJsonObject().addProperty("everyone-can-see-plugins", isEveryoneCanSeePlugins());
+        if (!getConfiguration().has("everyone-can-see-plugins")) {
+            getConfiguration().setValue("everyone-can-see-plugins", isEveryoneCanSeePlugins());
         }
-        setPluginsGUI(getConfiguration().getJsonElement().getAsJsonObject().get("plugins-gui").getAsBoolean());
-        setEveryoneCanSeePlugins(getConfiguration().getJsonElement().getAsJsonObject().get("everyone-can-see-plugins").getAsBoolean());
+        setPluginsGUI(getConfiguration().getBoolean("plugins-gui"));
+        setEveryoneCanSeePlugins(getConfiguration().getBoolean("everyone-can-see-plugins"));
         getConfiguration().save();
         if (Settings.AUTO_UPDATER.getValue()) {
             new PluginUpdate(this).downloadUpdate();
@@ -52,7 +54,7 @@ public class Manager extends JavaPlugin {
     }
 
     @Nonnull
-    public JsonConfig getConfiguration() {
+    public PropertyConfig getConfiguration() {
         return configuration;
     }
 

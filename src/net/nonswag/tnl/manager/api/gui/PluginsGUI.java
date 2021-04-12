@@ -29,6 +29,7 @@ public class PluginsGUI {
 
     @Nonnull
     public Inventory getInventory() {
+        inventory.clear();
         inventory.setItem(0, getPlaceholder2());
         inventory.setItem(8, getPlaceholder2());
         inventory.setItem(9, getPlaceholder1());
